@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "apivoyage": "file:",
     "bcrypt": "^5.1.1",
     "better-sqlite3": "^11.8.1",
     "cors": "^2.8.5",
