@@ -6,6 +6,9 @@ import db from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import tripRoutes from "./routes/tripRoutes.js";
 import packingListRoutes from "./routes/packingListRoutes.js";
+import { authenticateUser } from "./middlewares/authMiddleware.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+
 
 const app = express();
 
@@ -17,13 +20,10 @@ app.use(morgan("dev"));
 
 
 app.use("/api/auth", authRoutes);
-app.use("/api/trips", tripRoutes);
-app.use("/api/packing-lists", packingListRoutes);
+app.use("/api/trips", authenticateUser, tripRoutes);
+app.use("/api/packing-lists", authenticateUser, packingListRoutes);
 
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Erreur serveur" });
-});
+app.use(errorHandler);
 
 export default app;
