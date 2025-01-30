@@ -15,12 +15,12 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
 
-// Routes
+
 app.use("/api/auth", authRoutes);
 app.use("/api/trips", tripRoutes);
 app.use("/api/packing-lists", packingListRoutes);
 
-// Gestion des erreurs
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: "Erreur serveur" });
