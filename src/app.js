@@ -23,7 +23,4 @@ app.use("/api/auth", authRoutes);
 app.use("/api/trips", authenticateUser, tripRoutes);
 app.use("/api/packing-lists", authenticateUser, packingListRoutes);
 
-
-app.use(errorHandler);
-
 export default app;
