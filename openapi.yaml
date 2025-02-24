@@ -1,0 +1,293 @@
+openapi: 3.0.0
+info:
+  title: Packing List API
+  description: API pour gérer les listes de packing de voyage
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:5000/api'
+    description: Serveur de développement local
+paths:
+  /auth/register:
+    post:
+      summary: Inscription d'un utilisateur
+      description: Permet à un utilisateur de s'inscrire.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Le nom d'utilisateur
+                  example: TomSawyer
+                email:
+                  type: string
+                  format: email
+                  description: L'email de l'utilisateur
+                  example: tom@example.com
+                password:
+                  type: string
+                  format: password
+                  description: Le mot de passe de l'utilisateur
+                  example: mypassword123
+      responses:
+        '201':
+          description: Inscription réussie
+        '400':
+          description: Données manquantes ou invalides
+        '500':
+          description: Erreur interne du serveur
+  /auth/login:
+    post:
+      summary: Connexion d'un utilisateur
+      description: Permet à un utilisateur de se connecter.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: L'email de l'utilisateur
+                  example: tom@example.com
+                password:
+                  type: string
+                  format: password
+                  description: Le mot de passe de l'utilisateur
+                  example: mypassword123
+      responses:
+        '200':
+          description: 'Connexion réussie, renvoie le token JWT'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Le token JWT
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '400':
+          description: Email ou mot de passe incorrect
+        '500':
+          description: Erreur interne du serveur
+  /trips:
+    get:
+      summary: Récupérer les voyages d'un utilisateur
+      description: Récupère tous les voyages d'un utilisateur.
+      parameters:
+        - name: userId
+          in: query
+          description: L'ID de l'utilisateur
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Liste des voyages de l'utilisateur
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: ID du voyage
+                    title:
+                      type: string
+                      description: Le titre du voyage
+                    destination:
+                      type: string
+                      description: La destination
+                    startDate:
+                      type: string
+                      format: date
+                      description: La date de début
+                    endDate:
+                      type: string
+                      format: date
+                      description: La date de fin
+        '404':
+          description: Aucun voyage trouvé pour cet utilisateur
+        '500':
+          description: Erreur interne du serveur
+    post:
+      summary: Créer un nouveau voyage
+      description: Crée un voyage pour un utilisateur.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Le titre du voyage
+                destination:
+                  type: string
+                  description: La destination du voyage
+                startDate:
+                  type: string
+                  format: date
+                  description: La date de début du voyage
+                endDate:
+                  type: string
+                  format: date
+                  description: La date de fin du voyage
+                userId:
+                  type: integer
+                  description: ID de l'utilisateur
+      responses:
+        '201':
+          description: Voyage créé avec succès
+        '400':
+          description: Données manquantes ou invalides
+        '500':
+          description: Erreur interne du serveur
+  /packing-lists:
+    post:
+      summary: Créer une liste de packing pour un voyage
+      description: Crée une liste de packing pour un voyage donné.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tripId:
+                  type: integer
+                  description: ID du voyage
+                items:
+                  type: array
+                  items:
+                    type: string
+                  description: Liste des items à emporter
+      responses:
+        '201':
+          description: Liste de packing créée avec succès
+        '400':
+          description: Données manquantes ou invalides
+        '500':
+          description: Erreur interne du serveur
+  '/packing-lists/{tripId}/item':
+    put:
+      summary: Mettre à jour un item dans la liste de packing
+      description: Modifie un item dans la liste de packing d'un voyage.
+      parameters:
+        - name: tripId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: L'ID du voyage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldItemName:
+                  type: string
+                  description: Nom de l'item à remplacer
+                newItemName:
+                  type: string
+                  description: Nouveau nom de l'item
+      responses:
+        '200':
+          description: Item mis à jour avec succès
+        '404':
+          description: Item non trouvé
+        '500':
+          description: Erreur interne du serveur
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    users:
+      title: users
+      x-stoplight:
+        id: nxivxqvd97nnw
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: 2rsdehy8m2tvz
+        username:
+          type: string
+          x-stoplight:
+            id: 2rmd89pimqktj
+        email:
+          type: string
+          x-stoplight:
+            id: ezgphv45vn6ii
+        password:
+          type: string
+          x-stoplight:
+            id: w8x5sfjihx94z
+    trips:
+      title: trips
+      x-stoplight:
+        id: bx8bf7oj8dk8f
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: t6jk9u0s05m5u
+        user_id:
+          type: string
+          x-stoplight:
+            id: 255r9h3guzlv3
+        title:
+          type: string
+          x-stoplight:
+            id: dp9lvn8lv9e99
+        destination:
+          type: string
+          x-stoplight:
+            id: 69lplctmqpsgm
+        start_date:
+          type: string
+          x-stoplight:
+            id: r8r111i69opg7
+          format: date
+        end_date:
+          type: string
+          x-stoplight:
+            id: 9wwvmrbo8i80s
+          format: date
+    packing_lists:
+      title: packing_lists
+      x-stoplight:
+        id: yc3kh0m9k2gie
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: 2p74gmoe9k3yd
+        trip_id:
+          type: integer
+          x-stoplight:
+            id: pm5t95kh7vngs
+        items:
+          type: array
+          x-stoplight:
+            id: l59g29dcmyjkx
+          items: {}
+security:
+  - BearerAuth: []
