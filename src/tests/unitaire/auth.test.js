@@ -62,18 +62,20 @@ describe("Auth Utilities", () => {
       const validUser = {
         username: "testuser",
         email: "test@example.com",
-        password: "password123",
+        password: "Password123!",
       };
 
       const result = registerSchema.safeParse(validUser);
       expect(result.success).toBe(true); // Vérifie que la validation réussit
     });
 
+
+    // Test avec nom d'user court
     test("Devrait rejeter un utilisateur avec un nom d'utilisateur trop court", () => {
       const invalidUser = {
-        username: "us", // Trop court
+        username: "us", 
         email: "test@example.com",
-        password: "password123",
+        password: "Password123!",
       };
 
       const result = registerSchema.safeParse(invalidUser);
@@ -121,7 +123,7 @@ describe("Auth Utilities", () => {
     test("Devrait rejeter une connexion avec un email invalide", () => {
       const invalidLogin = {
         email: "invalid-email", // Email invalide
-        password: "password123",
+        password: "Password123!",
       };
 
       const result = loginSchema.safeParse(invalidLogin);
@@ -129,10 +131,11 @@ describe("Auth Utilities", () => {
       expect(result.error.issues[0].message).toBe("Email invalide");
     });
 
+    // Test avec MDP Trop court
     test("Devrait rejeter une connexion avec un mot de passe trop court", () => {
       const invalidLogin = {
         email: "test@example.com",
-        password: "pass", // Trop court
+        password: "pass", 
       };
 
       const result = loginSchema.safeParse(invalidLogin);

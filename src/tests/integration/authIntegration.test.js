@@ -35,7 +35,7 @@ describe("AuthController Integration Tests", () => {
             expect(bcrypt.compareSync("Password123!", user.password)).toBe(true);
         });
 
-        // Sans un champ remplis
+        // Sans un champ remplis mail
         test("Devrait renvoyer une erreur si un champ est manquant", async () => {
             const res = await request(app)
                 .post("/api/auth/register")
@@ -102,7 +102,7 @@ describe("AuthController Integration Tests", () => {
                 .post("/api/auth/login")
                 .send({
                     email: "test@example.com",
-                    password: "wrongpassword", // Mot de passe incorrect
+                    password: "fauxpswd",
                 });
 
             expect(res.statusCode).toBe(401);
