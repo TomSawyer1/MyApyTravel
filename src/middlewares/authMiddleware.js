@@ -1,10 +1,10 @@
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 dotenv.config();
 
 // Verification du Token JWT
 
-export const authenticateUser = (req, res, next) => {
+const authenticateUser = (req, res, next) => {
   const token = req.header("Authorization");
   if (!token) {
     return res.status(401).json({ message: "Accès refusé. Token manquant." });
@@ -18,3 +18,5 @@ export const authenticateUser = (req, res, next) => {
     res.status(403).json({ message: "Token invalide." });
   }
 };
+
+module.exports = {authenticateUser };

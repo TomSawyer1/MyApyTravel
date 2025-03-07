@@ -1,13 +1,12 @@
-import express from "express";
-import cors from "cors";
-import helmet from "helmet";
-import morgan from "morgan";
-import db from "./config/db.js";
-import authRoutes from "./routes/authRoutes.js";
-import tripRoutes from "./routes/tripRoutes.js";
-import packingListRoutes from "./routes/packingListRoutes.js";
-import { authenticateUser } from "./middlewares/authMiddleware.js";
-import { errorHandler } from "./middlewares/errorHandler.js";
+const express = require ("express");
+const cors = require ("cors");
+const helmet = require ("helmet");
+const morgan = require ("morgan");
+const db = require ("./config/db.js");
+const authRoutes = require ("./routes/authRoutes.js");
+const tripRoutes = require ("./routes/tripRoutes.js");
+const packingListRoutes = require ("./routes/packingListRoutes.js");
+const { authenticateUser } = require ("./middlewares/authMiddleware.js");
 
 
 const app = express();
@@ -23,4 +22,4 @@ app.use("/api/auth", authRoutes);
 app.use("/api/trips", authenticateUser, tripRoutes);
 app.use("/api/packing-lists", authenticateUser, packingListRoutes);
 
-export default app;
+module.exports = app;

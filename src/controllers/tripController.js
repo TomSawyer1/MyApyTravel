@@ -1,7 +1,7 @@
-import db from "../config/db.js";
+const db = require("../config/db");
 
-// Fonction pour créer un voyage
-export const createTrip = (req, res) => {
+
+const createTrip = (req, res) => {
   const { title, destination, startDate, endDate, userId } = req.body;
 
   if (!title || !destination || !startDate || !endDate || !userId) {
@@ -18,8 +18,7 @@ export const createTrip = (req, res) => {
   }
 };
 
-// Fonction pour obtenir les voyages d'un utilisateur
-export const getTrips = (req, res) => {
+const getTrips = (req, res) => {
   const { userId } = req.query;
 
   const trips = db.prepare("SELECT * FROM trips WHERE user_id = ?").all(userId);
@@ -30,3 +29,5 @@ export const getTrips = (req, res) => {
 
   res.status(200).json({ trips });
 };
+
+module.exports = { createTrip, getTrips};

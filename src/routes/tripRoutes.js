@@ -1,9 +1,9 @@
-import express from "express";
-import { createTrip, getTrips } from "../controllers/tripController.js";
+const express = require("express");
+const { createTrip, getTrips } = require("../controllers/tripController");
 
 const router = express.Router();
 
 router.post("/", createTrip);
 router.get("/", getTrips);
 
-export default router;
+module.exports = router;

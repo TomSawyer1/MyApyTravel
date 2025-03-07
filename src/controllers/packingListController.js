@@ -1,7 +1,7 @@
-import db from "../config/db.js";
+const db = require ("../config/db.js");
 
 // Fonction pour créer une liste de packing
-export const createPackingList = (req, res) => {
+const createPackingList = (req, res) => {
   const { tripId, items } = req.body;
 
   if (!tripId || !items) {
@@ -18,8 +18,8 @@ export const createPackingList = (req, res) => {
   }
 };
 
-// Fonction pour obtenir la liste de packing d'un voyage
-export const getPackingList = (req, res) => {
+
+const getPackingList = (req, res) => {
   const { tripId } = req.params;
 
   const packingList = db.prepare("SELECT * FROM packing_lists WHERE trip_id = ?").get(tripId);
@@ -31,8 +31,8 @@ export const getPackingList = (req, res) => {
   res.status(200).json({ items: JSON.parse(packingList.items) });
 };
 
-// Fonction pour supprimer un item d'une liste de packing
-export const deleteItemFromPackingList = (req, res) => {
+
+ const deleteItemFromPackingList = (req, res) => {
   const { tripId } = req.params; 
   const { itemName } = req.body; 
 
@@ -43,7 +43,6 @@ export const deleteItemFromPackingList = (req, res) => {
     return res.status(404).json({ message: "Liste de packing non trouvée pour ce voyage" });
   }
 
-  // Parse les items (stockés en JSON)
   const items = JSON.parse(packingList.items);
 
 
@@ -61,8 +60,7 @@ export const deleteItemFromPackingList = (req, res) => {
 };
 
 
-// Fonction pour mettre à jour un item dans la liste de packing
-export const updateItemInPackingList = (req, res) => {
+ const updateItemInPackingList = (req, res) => {
   const { tripId } = req.params; 
   const { oldItemName, newItemName } = req.body;
 
@@ -92,3 +90,5 @@ export const updateItemInPackingList = (req, res) => {
 
   res.status(200).json({ message: "Item mis à jour avec succès", items });
 };
+
+module.exports = { createPackingList, getPackingList, deleteItemFromPackingList, updateItemInPackingList};

@@ -1,9 +1,9 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import db from "../config/db.js";
+const bcrypt = require ("bcrypt");
+const jwt = require ("jsonwebtoken");
+const db = require ("../config/db.js");
 
 // Fonction pour l'enregistrement
-export const register = (req, res) => {
+ const register = (req, res) => {
   const { username, email, password } = req.body;
   
   if (!username || !email || !password) {
@@ -23,7 +23,7 @@ export const register = (req, res) => {
 };
 
 // Fonction pour la connexion
-export const login = (req, res) => {
+ const login = (req, res) => {
   const { email, password } = req.body;
 
   const user = db.prepare("SELECT * FROM users WHERE email = ?").get(email);
@@ -42,3 +42,5 @@ export const login = (req, res) => {
 
   res.status(200).json({ message: "Connexion réussie", token });
 };
+
+module.exports = { register, login };
