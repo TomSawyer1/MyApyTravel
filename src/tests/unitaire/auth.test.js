@@ -128,7 +128,7 @@ describe("Auth Utilities", () => {
 
       const result = loginSchema.safeParse(invalidLogin);
       expect(result.success).toBe(false); // Vérifie que la validation échoue
-      expect(result.error.issues[0].message).toBe("Email invalide!");
+      expect(result.error.issues[0].message).toBe("Email invalide?");
     });
 
     // Test avec MDP Trop court
